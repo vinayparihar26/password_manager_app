@@ -4,6 +4,7 @@ package com.example.mobileiip02504.MOBILEIIP02504.presentation.activity
  * File: ApiResultState.kt
  * Created by Vinay Parihar
  */
+
 import android.view.ViewTreeObserver
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -29,6 +30,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -36,6 +39,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
@@ -56,6 +60,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.ViewCompat
@@ -85,6 +91,7 @@ fun HomeScreen(
     var password by remember {
         mutableStateOf("")
     }
+    var passwordVisible by remember { mutableStateOf(false) }
 
     Scaffold(
         floatingActionButton = {
@@ -95,7 +102,7 @@ fun HomeScreen(
                     username = ""
                     password = ""
                     showSheet = true
-                }, containerColor = Color(0xFF3F7DE3), modifier = Modifier.size(75.dp)
+                }, containerColor = Color(0xFF3F7DE3), modifier = Modifier.size(70.dp)
             ) {
                 Icon(
                     Icons.Default.Add,
@@ -134,7 +141,7 @@ fun HomeScreen(
                         shape = RoundedCornerShape(32.dp),
                         // Set your desired corner radius
                         modifier = Modifier
-                            .padding(8.dp)
+                            .padding(horizontal = 5.dp, vertical = 4.dp)
                             .fillMaxWidth()
                             .clickable {
                                 selectedItem = item
@@ -168,7 +175,7 @@ fun HomeScreen(
                                 )
                                 Spacer(modifier = Modifier.weight(1f))
                                 Icon(
-                                    imageVector = Icons.Filled.KeyboardArrowRight,  // Arrow icon
+                                    imageVector = Icons.Filled.KeyboardArrowRight,
                                     contentDescription = "Arrow",
                                     tint = Color.Black,
                                     modifier = Modifier.size(25.dp)
@@ -271,6 +278,16 @@ fun HomeScreen(
                             },
                             isError = passwordError,
                             label = { Text("Password") },
+                            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                            trailingIcon = {
+                                val image = if (passwordVisible)
+                                    Icons.Default.Visibility
+                                else Icons.Default.VisibilityOff
+
+                                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                                    Icon(imageVector = image, contentDescription = if (passwordVisible) "Hide password" else "Show password")
+                                }
+                            },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .imePadding()
@@ -366,7 +383,7 @@ fun HomeScreen(
                                 ) {
                                     Text(
                                         "Add New Account",
-                                        fontSize = 15.sp,
+                                        fontSize = 20.sp,
                                         fontWeight = FontWeight.Bold
                                     )
                                 }
@@ -400,7 +417,7 @@ fun HomeScreen(
                                     )
                                 ) {
                                     Text(
-                                        "Save",
+                                        "Edit",
                                         fontSize = 15.sp,
                                         modifier = Modifier.padding(8.dp)
                                     )
@@ -497,7 +514,6 @@ private fun checkPasswordStrength(password: String): String {
         else -> "Weak"
     }
 }
-
 
 private fun generatePassword(length: Int = 12): String {
     val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')

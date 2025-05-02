@@ -58,6 +58,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.espresso.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -85,6 +87,5 @@ dependencies {
 
     implementation("androidx.compose.material3:material3:1.1.1")
     implementation ("androidx.compose.foundation:foundation:1.5.0")
-
-
+    implementation ("androidx.compose.material:material-icons-extended")
 }
